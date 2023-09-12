@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
-
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,29 @@ builder.Services.AddTransient<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "localhost",
+        ValidAudience = "localhost",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("08D856F45E32C98D0AA162BBD99E99D5"))
+    };
+});
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,10 +74,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

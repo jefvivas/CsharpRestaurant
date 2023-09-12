@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace Restaurant.Controllers;
 
+[Authorize]
 [Route("product/{id}")]
 [ApiController]
 
@@ -16,11 +18,11 @@ public class ProductDelete : ControllerBase
     }
 
     [HttpDelete]
-
     public IActionResult Delete([FromRoute] string id)
     {
 
-        var Product = _collection.Find(p => p.Id == id).First();
+        var Product = _collection.Find(p => p.Id == id).FirstOrDefault();
+
         if (Product == null)
         {
             return NotFound("Product not found");

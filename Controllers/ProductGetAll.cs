@@ -19,6 +19,10 @@ public class ProductGetAll : ControllerBase
     {
 
         var Products = _collection.Find(p => p.isAvailable).ToList();
+        if (Products.Count == 0)
+        {
+            return NotFound("No products");
+        }
         var ProductResponse = Products.Select(p => new ProductGetResponse { Id = p.Id, Name = p.Name, Price = p.Price });
 
 
