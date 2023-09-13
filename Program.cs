@@ -45,6 +45,15 @@ builder.Services.AddSingleton<IMongoCollection<Table>>(sp =>
     return database.GetCollection<Table>("Tables");
 });
 
+builder.Services.AddSingleton<IMongoCollection<Admin>>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+
+    var mongoClient = new MongoClient(settings.ConnectionString);
+    var database = mongoClient.GetDatabase(settings.DatabaseName);
+    return database.GetCollection<Admin>("Admin");
+});
+
 builder.Services.AddTransient<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Restaurant.Models;
 namespace Restaurant.Controllers;
 
+[Authorize(AuthenticationSchemes = "adminJWT")]
 [Route("table")]
 [ApiController]
 public class TablePost : ControllerBase
@@ -18,7 +20,7 @@ public class TablePost : ControllerBase
 
     public IActionResult Post([FromBody] Table table)
     {
-        var isTableAlreadyCreated = _collection.Find(p => p.Number == table.Number).FirstOrDefault();
+        var isTableAlreadyCreated = _collection.Find(t => t.Number == table.Number).FirstOrDefault();
 
         if (isTableAlreadyCreated != null)
         {

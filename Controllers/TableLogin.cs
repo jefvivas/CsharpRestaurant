@@ -24,7 +24,8 @@ public class TableLogin : ControllerBase
     public IActionResult Post([FromBody] Table credentials)
     {
         var tableFound = _collection.Find(t => t.Number == credentials.Number).FirstOrDefault();
-        if (tableFound != null)
+
+        if (tableFound == null)
         {
             return Unauthorized("Number/password dont match");
 

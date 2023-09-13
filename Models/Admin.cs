@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Restaurant.Models;
 
-public class AdminCredentials
+public class Admin
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -11,7 +11,7 @@ public class AdminCredentials
     public string Username { get; set; }
     public string Password { get; set; }
 
-    public AdminCredentials(string username, string password)
+    public Admin(string username, string password)
     {
         Username = username;
         Password = password;
