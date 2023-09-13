@@ -21,9 +21,9 @@ public class ProductDelete : ControllerBase
     public IActionResult Delete([FromRoute] string id)
     {
 
-        var Product = _collection.Find(p => p.Id == id).FirstOrDefault();
+        var product = _collection.Find(p => p.Id == id).FirstOrDefault();
 
-        if (Product == null)
+        if (product == null)
         {
             return NotFound("Product not found");
         }

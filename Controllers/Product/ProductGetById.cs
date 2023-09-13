@@ -20,12 +20,12 @@ public class ProductGetById : ControllerBase
     public IActionResult Get([FromRoute] string id)
     {
 
-        var Product = _collection.Find(p => p.Id == id).First();
-        if (Product == null)
+        var product = _collection.Find(p => p.Id == id).First();
+        if (product == null)
         {
             return NotFound("Product not found!");
         }
-        var ProductResponse = new ProductGetResponse { Id = Product.Id, Name = Product.Name, Price = Product.Price };
+        var ProductResponse = new ProductGetResponse { Id = product.Id, Name = product.Name, Price = product.Price };
 
 
         return Ok(ProductResponse);
