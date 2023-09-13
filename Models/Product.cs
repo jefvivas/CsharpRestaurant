@@ -23,5 +23,9 @@ public class Product
         this.isAvailable = isAvailable;
     }
 
+    public bool IsValid()
+    {
+        return !string.IsNullOrEmpty(Name) && Price >= 0;
+    }
 }
 

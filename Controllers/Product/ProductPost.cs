@@ -17,17 +17,17 @@ public class ProductPost : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Product product)
     {
-        var isProductAlreadyCreated = _collection.Find(p => p.Name == product.Name).First();
+        var isProductAlreadyCreated = _collection.Find(p => p.Name == product.Name).FirstOrDefault();
 
         if (isProductAlreadyCreated != null)
         {
-            return BadRequest("Invalid Name");
+            return BadRequest("Product Already Exists");
 
         }
 
-        if (product.Price == 0)
+        if (!product.IsValid())
         {
-            return BadRequest("Invalid Price");
+            return BadRequest("Invalid Product");
         }
 
         if (!ModelState.IsValid)
