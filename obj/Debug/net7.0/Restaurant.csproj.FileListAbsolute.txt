@@ -52,3 +52,4 @@ C:\projetos\RestaurantC#\Restaurant\bin\Debug\net7.0\Microsoft.IdentityModel.Pro
 C:\projetos\RestaurantC#\Restaurant\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\projetos\RestaurantC#\Restaurant\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 C:\projetos\RestaurantC#\Restaurant\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\projetos\RestaurantC#\Restaurant\bin\Debug\net7.0\BCrypt.Net-Next.dll

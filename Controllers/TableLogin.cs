@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using Restaurant.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,21 +10,33 @@ namespace Restaurant.Controllers;
 
 [Route("/login")]
 [ApiController]
-public class UserLogin : ControllerBase
+public class TableLogin : ControllerBase
 {
+    private readonly IMongoCollection<Table> _collection;
+
+    public TableLogin(IMongoCollection<Table> collection)
+    {
+        _collection = collection;
+    }
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] UserCredentials credentials)
+    public IActionResult Post([FromBody] Table credentials)
     {
-        if (credentials.Username == "usuario" && credentials.Password == "senha")
+        var tableFound = _collection.Find(t => t.Number == credentials.Number).FirstOrDefault();
+        if (tableFound != null)
         {
-            var token = GenerateJwtToken(credentials.Username);
+            return Unauthorized("Number/password dont match");
+
+        }
+        if (BCrypt.Net.BCrypt.Verify(credentials.Password, tableFound.Password))
+        {
+            var token = GenerateJwtToken(credentials.Number);
 
             return Ok(new { Token = token });
         }
 
-        return Unauthorized();
+        return Unauthorized("Number/password dont match");
     }
 
     private string GenerateJwtToken(string username)

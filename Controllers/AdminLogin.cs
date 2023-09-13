@@ -14,7 +14,7 @@ public class AdminLogin : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] UserCredentials credentials)
+    public IActionResult Post([FromBody] AdminCredentials credentials)
     {
         if (credentials.Username == "admin" && credentials.Password == "admin")
         {
@@ -23,7 +23,7 @@ public class AdminLogin : ControllerBase
             return Ok(new { Token = token });
         }
 
-        return Unauthorized();
+        return Unauthorized("Username/password dont match");
     }
 
     private string GenerateJwtToken(string username)

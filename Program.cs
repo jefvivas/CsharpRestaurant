@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using Restaurant.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,15 @@ builder.Services.AddSingleton<IMongoCollection<Product>>(sp =>
     var mongoClient = new MongoClient(settings.ConnectionString);
     var database = mongoClient.GetDatabase(settings.DatabaseName);
     return database.GetCollection<Product>("Products");
+});
+
+builder.Services.AddSingleton<IMongoCollection<Table>>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+
+    var mongoClient = new MongoClient(settings.ConnectionString);
+    var database = mongoClient.GetDatabase(settings.DatabaseName);
+    return database.GetCollection<Table>("Tables");
 });
 
 builder.Services.AddTransient<IMongoDatabase>(sp =>

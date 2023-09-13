@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "84tBNXz7301DlvtnQU05OyglW+mZg/eRoE+zYHuY1ZIlm9erJoGzOrDdhWDf22/qTT4bw0PafNnm6hvnpuuGOg==",
+  "dgSpecHash": "4O3g69j7kAN5nx2OCIvoYDSdi8kzT1mJVKEbEyExr8h253WFci/i+WUw0oKSqvpttTAaPliN9z+L+fzai9zmjQ==",
   "success": true,
   "projectFilePath": "C:\\projetos\\RestaurantC#\\Restaurant\\Restaurant.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jefer\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\jefer\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
+    "C:\\Users\\jefer\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\jefer\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\jefer\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.10\\microsoft.aspnetcore.authentication.jwtbearer.7.0.10.nupkg.sha512",
     "C:\\Users\\jefer\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.9\\microsoft.aspnetcore.openapi.7.0.9.nupkg.sha512",
