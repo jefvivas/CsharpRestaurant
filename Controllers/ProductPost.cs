@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
-
+[Authorize(AuthenticationSchemes = "adminJWT")]
 [Route("product")]
 [ApiController]
 public class ProductPost : ControllerBase

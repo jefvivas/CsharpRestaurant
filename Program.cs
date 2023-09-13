@@ -43,6 +43,7 @@ builder.Services.AddTransient<IMongoDatabase>(sp =>
 });
 
 builder.Services.AddAuthorization();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,11 +58,25 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "localhost",
-        ValidAudience = "localhost",
+        ValidIssuer = "localhostUser",
+        ValidAudience = "localhostUser",
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("08D856F45E32C98D0AA162BBD99E99D5"))
     };
-});
+})
+
+.AddJwtBearer("adminJWT", options =>
+ {
+     options.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateIssuer = false,
+         ValidateAudience = false,
+         ValidateIssuerSigningKey = true,
+         ValidIssuer = "localhostAdmin",
+         ValidAudience = "localhostAdmin",
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("3A9F041FD4B9E0C12D0B8F008F5E1B76D8DCA1CEBB36E5E586A81D5B936F276"))
+     };
+ });
+
 
 
 

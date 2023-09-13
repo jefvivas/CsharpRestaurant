@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Restaurant.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = "adminJWT")]
 [Route("product/{id}")]
 [ApiController]
 

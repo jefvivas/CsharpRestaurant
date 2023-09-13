@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
+[Authorize]
 [Route("product/{id}")]
 [ApiController]
 public class ProductGetById : ControllerBase

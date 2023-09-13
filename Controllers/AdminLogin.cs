@@ -6,16 +6,17 @@ using System.Security.Claims;
 using System.Text;
 
 namespace Restaurant.Controllers;
-[Route("/Auth")]
+
+[Route("/admin/login")]
 [ApiController]
-public class Auth : ControllerBase
+public class AdminLogin : ControllerBase
 {
 
     [HttpPost]
 
     public IActionResult Post([FromBody] UserCredentials credentials)
     {
-        if (credentials.Username == "usuario" && credentials.Password == "senha")
+        if (credentials.Username == "admin" && credentials.Password == "admin")
         {
             var token = GenerateJwtToken(credentials.Username);
 
@@ -27,7 +28,7 @@ public class Auth : ControllerBase
 
     private string GenerateJwtToken(string username)
     {
-        var key = Encoding.UTF8.GetBytes("08D856F45E32C98D0AA162BBD99E99D5");
+        var key = Encoding.UTF8.GetBytes("3A9F041FD4B9E0C12D0B8F008F5E1B76D8DCA1CEBB36E5E586A81D5B936F276");
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

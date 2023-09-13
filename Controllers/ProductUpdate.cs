@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace Restaurant.Controllers;
+
+[Authorize(AuthenticationSchemes = "adminJWT")]
 [Route("product/{id}")]
 [ApiController]
 public class ProductUpdate : ControllerBase
