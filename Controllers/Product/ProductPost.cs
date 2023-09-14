@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
+using Restaurant.Services;
 
 [Authorize(AuthenticationSchemes = "adminJWT")]
 [Route("product")]
 [ApiController]
 public class ProductPost : ControllerBase
 {
-    private readonly IMongoCollection<Product> _collection;
+    private readonly ProductServices _productServices;
 
-    public ProductPost(IMongoCollection<Product> collection)
+    public ProductPost(ProductServices productServices)
     {
-        _collection = collection;
+        _productServices = productServices;
     }
 
     [HttpPost]
     public IActionResult Post([FromBody] Product product)
     {
-        var isProductAlreadyCreated = _collection.Find(p => p.Name == product.Name).FirstOrDefault();
+        var isProductAlreadyCreated = _productServices.GetProductByName(product.Name);
 
         if (isProductAlreadyCreated != null)
         {
@@ -38,7 +38,7 @@ public class ProductPost : ControllerBase
 
         var productToInsert = new Product(product.Name, product.Price, product.isAvailable);
 
-        _collection.InsertOne(productToInsert);
+        _productServices.CreateProduct(productToInsert);
 
         return Ok("Product stored successfully");
     }

@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.Mvc;
+using Restaurant.Services;
 
-[Authorize]
 [Route("product/{id}")]
 [ApiController]
 public class ProductGetById : ControllerBase
 {
 
-    private readonly IMongoCollection<Product> _collection;
+    private readonly ProductServices _productServices;
 
-    public ProductGetById(IMongoCollection<Product> collection)
+    public ProductGetById(ProductServices productServices)
     {
-        _collection = collection;
+        _productServices = productServices;
     }
 
     [HttpGet]
@@ -20,7 +18,8 @@ public class ProductGetById : ControllerBase
     public IActionResult Get([FromRoute] string id)
     {
 
-        var product = _collection.Find(p => p.Id == id).First();
+        var product = _productServices.GetProductById(id);
+
         if (product == null)
         {
             return NotFound("Product not found!");

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
+using Restaurant.Services;
 
 namespace Restaurant.Controllers;
 
@@ -10,25 +10,25 @@ namespace Restaurant.Controllers;
 
 public class ProductDelete : ControllerBase
 {
-    private readonly IMongoCollection<Product> _collection;
+    private readonly ProductServices _productServices;
 
-    public ProductDelete(IMongoCollection<Product> collection)
+    public ProductDelete(ProductServices productServices)
     {
-        _collection = collection;
+        _productServices = productServices;
     }
 
     [HttpDelete]
     public IActionResult Delete([FromRoute] string id)
     {
 
-        var product = _collection.Find(p => p.Id == id).FirstOrDefault();
+        var product = _productServices.GetProductById(id);
 
         if (product == null)
         {
             return NotFound("Product not found");
         }
 
-        _collection.DeleteOne(p => p.Id == id);
+        _productServices.DeleteProduct(id);
 
 
         return Ok("Product Deleted");

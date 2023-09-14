@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using Restaurant.Services;
 
-[Authorize]
 [Route("product")]
 [ApiController]
 public class ProductGetAll : ControllerBase
 {
 
-    private readonly IMongoCollection<Product> _collection;
+    private readonly ProductServices _productServices;
 
-    public ProductGetAll(IMongoCollection<Product> collection)
+    public ProductGetAll(ProductServices productServices)
     {
-        _collection = collection;
+        _productServices = productServices;
     }
 
     [HttpGet]
@@ -20,8 +19,9 @@ public class ProductGetAll : ControllerBase
     public IActionResult Get()
     {
 
-        var Products = _collection.Find(p => p.isAvailable).ToList();
-        if (Products.Count == 0)
+        var Products = _productServices.GetAllProducts();
+
+        if (!Products.Any())
         {
             return NotFound("No products!");
         }

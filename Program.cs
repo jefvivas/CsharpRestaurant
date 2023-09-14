@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using Restaurant.Models;
+using Restaurant.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -96,7 +97,7 @@ builder.Services.AddAuthentication(options =>
      };
  });
 
-
+builder.Services.AddScoped<ProductServices>();
 
 
 var app = builder.Build();

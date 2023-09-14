@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
+using Restaurant.Services;
 
 namespace Restaurant.Controllers;
 
@@ -10,11 +10,11 @@ namespace Restaurant.Controllers;
 public class ProductUpdate : ControllerBase
 {
 
-    private readonly IMongoCollection<Product> _collection;
+    private readonly ProductServices _productServices;
 
-    public ProductUpdate(IMongoCollection<Product> collection)
+    public ProductUpdate(ProductServices productServices)
     {
-        _collection = collection;
+        _productServices = productServices;
     }
 
     [HttpPut]
@@ -22,7 +22,7 @@ public class ProductUpdate : ControllerBase
     public IActionResult Put([FromRoute] string id, [FromBody] Product updatedProduct)
     {
 
-        var existingProduct = _collection.Find(p => p.Id == id).First();
+        var existingProduct = _productServices.GetProductByName(id);
 
         if (existingProduct == null)
         {
@@ -33,8 +33,7 @@ public class ProductUpdate : ControllerBase
         existingProduct.isAvailable = updatedProduct.isAvailable;
         existingProduct.Price = updatedProduct.Price;
 
-        _collection.ReplaceOne(p => p.Id == id, existingProduct);
-
+        _productServices.UpdateProduct(existingProduct);
 
         return Ok(existingProduct);
     }
