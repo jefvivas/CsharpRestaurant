@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Restaurant.Models;
+using Restaurant.Services;
+
 namespace Restaurant.Controllers;
 
 [Authorize(AuthenticationSchemes = "adminJWT")]
@@ -9,18 +10,20 @@ namespace Restaurant.Controllers;
 [ApiController]
 public class AdminPost : ControllerBase
 {
-    private readonly IMongoCollection<Admin> _collection;
+    private readonly AdminServices _adminServices;
+    private readonly HashServices _hashServices;
 
-    public AdminPost(IMongoCollection<Admin> collection)
+    public AdminPost(AdminServices adminServices, HashServices hashServices)
     {
-        _collection = collection;
+        _adminServices = adminServices;
+        _hashServices = hashServices;
     }
 
     [HttpPost]
 
     public IActionResult Post([FromBody] Admin admin)
     {
-        var isAdminAlreadyCreated = _collection.Find(a => a.Username == admin.Username).FirstOrDefault();
+        var isAdminAlreadyCreated = _adminServices.GetAdminByUsername(admin.Username);
 
         if (isAdminAlreadyCreated != null)
         {
@@ -39,11 +42,11 @@ public class AdminPost : ControllerBase
 
         }
 
-        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(admin.Password);
+        var hashedPassword = _hashServices.CreateHashedPassword(admin.Password);
 
         var adminToInsert = new Admin(admin.Username, hashedPassword);
 
-        _collection.InsertOne(adminToInsert);
+        _adminServices.CreateAdmin(adminToInsert);
 
         return Ok("Admin stored successfully");
     }

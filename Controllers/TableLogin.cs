@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Restaurant.Models;
 using Restaurant.Services;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Restaurant.Controllers;
 
@@ -13,11 +9,16 @@ namespace Restaurant.Controllers;
 public class TableLogin : ControllerBase
 {
     private readonly TableServices _tableServices;
+    private readonly JwtServices _jwtService;
+    private readonly HashServices _hashService;
 
 
-    public TableLogin(TableServices tableServices)
+
+    public TableLogin(TableServices tableServices, JwtServices jwtService, HashServices hashService)
     {
         _tableServices = tableServices;
+        _jwtService = jwtService;
+        _hashService = hashService;
     }
 
     [HttpPost]
@@ -31,9 +32,9 @@ public class TableLogin : ControllerBase
             return Unauthorized("Number/password dont match");
 
         }
-        if (BCrypt.Net.BCrypt.Verify(credentials.Password, tableFound.Password))
+        if (_hashService.VerifyPassword(credentials.Password, tableFound.Password))
         {
-            var token = GenerateJwtToken(credentials.Number);
+            var token = _jwtService.GenerateJwtToken(credentials.Number, "08D856F45E32C98D0AA162BBD99E99D5");
 
             return Ok(new { Token = token });
         }
@@ -41,22 +42,5 @@ public class TableLogin : ControllerBase
         return Unauthorized("Number/password dont match");
     }
 
-    private string GenerateJwtToken(string username)
-    {
-        var key = Encoding.UTF8.GetBytes("08D856F45E32C98D0AA162BBD99E99D5");
 
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, username),
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
 }

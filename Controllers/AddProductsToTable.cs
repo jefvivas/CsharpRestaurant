@@ -12,10 +12,10 @@ namespace Restaurant.Controllers;
 public class AddProductsToTable : ControllerBase
 {
     private readonly TableServices _tableServices;
-    private readonly JwtService _jwtService;
+    private readonly JwtServices _jwtService;
 
 
-    public AddProductsToTable(TableServices tableServices, JwtService jwtService)
+    public AddProductsToTable(TableServices tableServices, JwtServices jwtService)
     {
         _tableServices = tableServices;
         _jwtService = jwtService;

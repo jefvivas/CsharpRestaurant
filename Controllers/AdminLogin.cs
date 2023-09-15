@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
 using Restaurant.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Restaurant.Services;
 
 namespace Restaurant.Controllers;
 
@@ -13,18 +9,23 @@ namespace Restaurant.Controllers;
 public class AdminLogin : ControllerBase
 {
 
-    private readonly IMongoCollection<Admin> _collection;
+    private readonly AdminServices _adminServices;
+    private readonly JwtServices _jwtService;
+    private readonly HashServices _hashService;
 
-    public AdminLogin(IMongoCollection<Admin> collection)
+
+    public AdminLogin(AdminServices adminServices, JwtServices jwtService, HashServices hashService)
     {
-        _collection = collection;
+        _adminServices = adminServices;
+        _jwtService = jwtService;
+        _hashService = hashService;
     }
 
     [HttpPost]
 
     public IActionResult Post([FromBody] Admin credentials)
     {
-        var adminFound = _collection.Find(a => a.Username == credentials.Username).FirstOrDefault();
+        var adminFound = _adminServices.GetAdminByUsername(credentials.Username);
 
 
         if (adminFound == null)
@@ -32,9 +33,9 @@ public class AdminLogin : ControllerBase
             return Unauthorized("Username/password dont match");
 
         }
-        if (BCrypt.Net.BCrypt.Verify(credentials.Password, adminFound.Password))
+        if (_hashService.VerifyPassword(credentials.Password, adminFound.Password))
         {
-            var token = GenerateJwtToken(credentials.Username);
+            var token = _jwtService.GenerateJwtToken(credentials.Username, "3A9F041FD4B9E0C12D0B8F008F5E1B76D8DCA1CEBB36E5E586A81D5B936F276");
 
             return Ok(new { Token = token });
         }
@@ -42,22 +43,4 @@ public class AdminLogin : ControllerBase
         return Unauthorized("Username/passworde dont match");
     }
 
-    private string GenerateJwtToken(string username)
-    {
-        var key = Encoding.UTF8.GetBytes("3A9F041FD4B9E0C12D0B8F008F5E1B76D8DCA1CEBB36E5E586A81D5B936F276");
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, username),
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
 }

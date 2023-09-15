@@ -11,10 +11,13 @@ namespace Restaurant.Controllers;
 public class TablePost : ControllerBase
 {
     private readonly TableServices _tableServices;
+    private readonly HashServices _hashService;
 
-    public TablePost(TableServices tableServices)
+
+    public TablePost(TableServices tableServices, HashServices hashService)
     {
         _tableServices = tableServices;
+        _hashService = hashService;
     }
 
     [HttpPost]
@@ -40,7 +43,7 @@ public class TablePost : ControllerBase
 
         }
 
-        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(table.Password);
+        var hashedPassword = _hashService.CreateHashedPassword(table.Password);
 
         var tableToInsert = new Table(table.Number, hashedPassword);
 

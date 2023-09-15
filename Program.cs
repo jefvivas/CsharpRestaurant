@@ -99,8 +99,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<TableServices>();
+builder.Services.AddScoped<JwtServices>();
+builder.Services.AddScoped<HashServices>();
 
-builder.Services.AddSingleton<JwtService>();
 
 
 
