@@ -21,7 +21,7 @@ public class TableLogin : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] Table credentials)
+    public IActionResult Post([FromBody] TableLoginInput credentials)
     {
         var tableFound = _collection.Find(t => t.Number == credentials.Number).FirstOrDefault();
 
