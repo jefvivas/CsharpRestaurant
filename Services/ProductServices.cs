@@ -1,8 +1,9 @@
 ﻿using MongoDB.Driver;
+using Restaurant.Interfaces;
 
 namespace Restaurant.Services;
 
-public class ProductServices
+public class ProductServices : IProductServices
 {
     private readonly IMongoCollection<Product> _collection;
 

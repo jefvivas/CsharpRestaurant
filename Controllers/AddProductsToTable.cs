@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Restaurant.Models;
-using System.IdentityModel.Tokens.Jwt;
+using Restaurant.Services;
 
 
 namespace Restaurant.Controllers;
@@ -13,39 +13,25 @@ namespace Restaurant.Controllers;
 public class AddProductsToTable : ControllerBase
 {
     private readonly IMongoCollection<Table> _collection;
+    private readonly JwtService _jwtService;
 
-    public AddProductsToTable(IMongoCollection<Table> collection)
+
+    public AddProductsToTable(IMongoCollection<Table> collection, JwtService jwtService)
     {
         _collection = collection;
+        _jwtService = jwtService;
+
     }
 
-    [HttpGet]
+    [HttpPost]
 
-    public IActionResult Get()
+    public IActionResult Post([FromBody] ConsumePostBody consumeBody)
     {
-        var authHeader = HttpContext.Request.Headers.Authorization.ToString();
-
-        if (string.IsNullOrWhiteSpace(authHeader))
-        {
-            return BadRequest("Token is needed.");
-        }
-
-        var tokenParts = authHeader.Split(' ');
-
-        if (tokenParts.Length != 2 || tokenParts[0] != "Bearer")
-        {
-            return BadRequest("Invalid Token.");
-        }
-
-        var token = tokenParts[1];
-        var handler = new JwtSecurityTokenHandler();
-        var tokens = handler.ReadJwtToken(token);
-
-        var uniqueNameClaim = tokens.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
+        var uniqueNameClaim = _jwtService.GetUniqueNameClaim(HttpContext);
 
         if (string.IsNullOrWhiteSpace(uniqueNameClaim))
         {
-            return BadRequest("Unique name not found.");
+            return BadRequest("Invalid Token.");
         }
 
         var table = _collection.Find(t => t.Number == uniqueNameClaim).FirstOrDefault();
@@ -55,15 +41,22 @@ public class AddProductsToTable : ControllerBase
             return NotFound("Table not found.");
         }
 
-        if (table.ConsumedProducts.ContainsKey("6501f49e735c2c453b53ed0a"))
+        foreach (var item in consumeBody.Items)
+        {
+            if (!table.ConsumedProducts.ContainsKey(item.ProductId))
 
-        {
-            table.ConsumedProducts["6501f49e735c2c453b53ed0a"] += 1;
+            {
+                table.ConsumedProducts.Add(item.ProductId, item.Quantity);
+
+            }
+            else
+            {
+                table.ConsumedProducts[item.ProductId] += item.Quantity;
+            }
+
+
         }
-        else
-        {
-            table.ConsumedProducts.Add("6501f49e735c2c453b53ed0a", 1);
-        }
+
 
         var filter = Builders<Table>.Filter.Eq(t => t.Number, uniqueNameClaim);
         var update = Builders<Table>.Update
@@ -79,6 +72,5 @@ public class AddProductsToTable : ControllerBase
 
         return Ok("added product to table");
     }
-
 
 }

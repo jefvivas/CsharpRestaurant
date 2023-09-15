@@ -98,6 +98,10 @@ builder.Services.AddAuthentication(options =>
  });
 
 builder.Services.AddScoped<ProductServices>();
+builder.Services.AddScoped<TableServices>();
+
+builder.Services.AddSingleton<JwtService>();
+
 
 
 var app = builder.Build();

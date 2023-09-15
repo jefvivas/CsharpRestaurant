@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Restaurant.Models;
+using Restaurant.Services;
+
 namespace Restaurant.Controllers;
 
 [Authorize(AuthenticationSchemes = "adminJWT")]
@@ -9,18 +10,18 @@ namespace Restaurant.Controllers;
 [ApiController]
 public class TablePost : ControllerBase
 {
-    private readonly IMongoCollection<Table> _collection;
+    private readonly TableServices _tableServices;
 
-    public TablePost(IMongoCollection<Table> collection)
+    public TablePost(TableServices tableServices)
     {
-        _collection = collection;
+        _tableServices = tableServices;
     }
 
     [HttpPost]
 
     public IActionResult Post([FromBody] Table table)
     {
-        var isTableAlreadyCreated = _collection.Find(t => t.Number == table.Number).FirstOrDefault();
+        var isTableAlreadyCreated = _tableServices.GetTableByNumber(table.Number);
 
         if (isTableAlreadyCreated != null)
         {
@@ -43,7 +44,7 @@ public class TablePost : ControllerBase
 
         var tableToInsert = new Table(table.Number, hashedPassword);
 
-        _collection.InsertOne(tableToInsert);
+        _tableServices.CreateTable(tableToInsert);
 
         return Ok("Table stored successfully");
     }
