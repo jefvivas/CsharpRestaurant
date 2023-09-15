@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Restaurant.Services;
 
 [Authorize(AuthenticationSchemes = "adminJWT")]
@@ -36,7 +35,7 @@ public class ProductPost : ControllerBase
 
         }
 
-        var productToInsert = new Product(product.Name, product.Price, product.isAvailable);
+        var productToInsert = new Product(product.Name, product.Price, product.Description, product.isAvailable);
 
         _productServices.CreateProduct(productToInsert);
 

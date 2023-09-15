@@ -13,19 +13,23 @@ public class Product
     [BsonElement("Price")]
     public decimal Price { get; set; }
 
+    [BsonElement("Description")]
+    public string? Description { get; set; }
+
     [BsonElement("Available")]
     public bool isAvailable { get; set; }
 
-    public Product(string Name, decimal Price, bool isAvailable = true)
+    public Product(string Name, decimal Price, string Description, bool isAvailable = true)
     {
         this.Name = Name;
         this.Price = Price;
+        this.Description = Description;
         this.isAvailable = isAvailable;
     }
 
     public bool IsValid()
     {
-        return !string.IsNullOrEmpty(Name) && Price >= 0;
+        return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Name) && Price >= 0;
     }
 }
 
