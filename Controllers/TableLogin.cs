@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
 using Restaurant.Models;
+using Restaurant.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,18 +12,19 @@ namespace Restaurant.Controllers;
 [ApiController]
 public class TableLogin : ControllerBase
 {
-    private readonly IMongoCollection<Table> _collection;
+    private readonly TableServices _tableServices;
 
-    public TableLogin(IMongoCollection<Table> collection)
+
+    public TableLogin(TableServices tableServices)
     {
-        _collection = collection;
+        _tableServices = tableServices;
     }
 
     [HttpPost]
 
     public IActionResult Post([FromBody] TableLoginInput credentials)
     {
-        var tableFound = _collection.Find(t => t.Number == credentials.Number).FirstOrDefault();
+        var tableFound = _tableServices.GetTableByNumber(credentials.Number);
 
         if (tableFound == null)
         {
