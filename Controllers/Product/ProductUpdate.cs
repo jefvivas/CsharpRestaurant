@@ -19,10 +19,10 @@ public class ProductUpdate : ControllerBase
 
     [HttpPut]
 
-    public IActionResult Put([FromRoute] string id, [FromBody] Product updatedProduct)
+    public async Task<IActionResult> Put([FromRoute] string id, [FromBody] Product updatedProduct)
     {
 
-        var existingProduct = _productServices.GetProductByName(id);
+        var existingProduct = await _productServices.GetProductByName(id);
 
         if (existingProduct == null)
         {
@@ -34,7 +34,7 @@ public class ProductUpdate : ControllerBase
         existingProduct.Description = updatedProduct.Description;
         existingProduct.Price = updatedProduct.Price;
 
-        _productServices.UpdateProduct(existingProduct);
+        await _productServices.UpdateProduct(existingProduct);
 
         return Ok(existingProduct);
     }

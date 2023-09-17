@@ -12,34 +12,34 @@ public class ProductServices : IProductServices
         _collection = collection;
     }
 
-    public Product GetProductById(string id)
+    public async Task<Product> GetProductById(string id)
     {
-        return _collection.Find(p => p.Id == id).FirstOrDefault();
+        return await _collection.Find(p => p.Id == id).FirstOrDefaultAsync();
     }
 
-    public Product GetProductByName(string name)
+    public async Task<Product> GetProductByName(string name)
     {
-        return _collection.Find(p => p.Name == name).FirstOrDefault();
+        return await _collection.Find(p => p.Name == name).FirstOrDefaultAsync();
     }
 
-    public IEnumerable<Product> GetAllProducts()
+    public async Task<IEnumerable<Product>> GetAllProducts()
     {
-        return _collection.Find(_ => true).ToList();
+        return await _collection.Find(_ => true).ToListAsync();
     }
 
-    public void DeleteProduct(string id)
+    public async Task DeleteProduct(string id)
     {
-        _collection.DeleteOne(p => p.Id == id);
+        await _collection.DeleteOneAsync(p => p.Id == id);
     }
 
-    public void CreateProduct(Product product)
+    public async Task CreateProduct(Product product)
     {
-        _collection.InsertOne(product);
+        await _collection.InsertOneAsync(product);
     }
 
-    public void UpdateProduct(Product product)
+    public async Task UpdateProduct(Product product)
     {
-        _collection.ReplaceOne(p => p.Id == product.Id, product);
+        await _collection.ReplaceOneAsync(p => p.Id == product.Id, product);
 
     }
 }

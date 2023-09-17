@@ -23,9 +23,9 @@ public class AdminLogin : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] Admin credentials)
+    public async Task<IActionResult> Post([FromBody] Admin credentials)
     {
-        var adminFound = _adminServices.GetAdminByUsername(credentials.Username);
+        var adminFound = await _adminServices.GetAdminByUsername(credentials.Username);
 
 
         if (adminFound == null)

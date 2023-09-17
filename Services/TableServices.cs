@@ -14,16 +14,16 @@ public class TableServices : ITableServices
     }
 
 
-    public Table GetTableByNumber(string number)
+    public async Task<Table> GetTableByNumber(string number)
     {
-        return _collection.Find(p => p.Number == number).FirstOrDefault();
+        return await _collection.Find(p => p.Number == number).FirstOrDefaultAsync();
     }
 
-    public void CreateTable(Table table)
+    public async Task CreateTable(Table table)
     {
-        _collection.InsertOne(table);
+        await _collection.InsertOneAsync(table);
     }
-    public void InsertProductsIntoTable(Table table, ConsumePostBody consumeBody)
+    public async Task InsertProductsIntoTable(Table table, ConsumePostBody consumeBody)
     {
         foreach (var item in consumeBody.Items)
         {
@@ -45,7 +45,7 @@ public class TableServices : ITableServices
         var update = Builders<Table>.Update
             .Set(t => t.ConsumedProducts, table.ConsumedProducts);
 
-        _collection.ReplaceOne(filter, table);
+        await _collection.ReplaceOneAsync(filter, table);
 
     }
 

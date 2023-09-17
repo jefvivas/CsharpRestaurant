@@ -24,7 +24,7 @@ public class AddProductsToTable : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] ConsumePostBody consumeBody)
+    public async Task<IActionResult> Post([FromBody] ConsumePostBody consumeBody)
     {
         if (!consumeBody.Items.Any())
         {
@@ -37,14 +37,14 @@ public class AddProductsToTable : ControllerBase
             return BadRequest("Invalid Token.");
         }
 
-        var table = _tableServices.GetTableByNumber(uniqueNameClaim);
+        var table = await _tableServices.GetTableByNumber(uniqueNameClaim);
 
         if (table == null)
         {
             return NotFound("Table not found.");
         }
 
-        _tableServices.InsertProductsIntoTable(table, consumeBody);
+        await _tableServices.InsertProductsIntoTable(table, consumeBody);
 
         return Ok("added product to table");
     }

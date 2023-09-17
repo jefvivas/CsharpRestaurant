@@ -2,11 +2,11 @@
 
 public interface IProductServices
 {
-    Product GetProductById(string id);
-    Product GetProductByName(string name);
-    IEnumerable<Product> GetAllProducts();
-    void DeleteProduct(string id);
-    void CreateProduct(Product product);
-    void UpdateProduct(Product product);
+    Task<Product> GetProductById(string id);
+    Task<Product> GetProductByName(string name);
+    Task<IEnumerable<Product>> GetAllProducts();
+    Task DeleteProduct(string id);
+    Task CreateProduct(Product product);
+    Task UpdateProduct(Product product);
 
 }

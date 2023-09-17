@@ -4,8 +4,8 @@ namespace Restaurant.Interfaces;
 
 public interface ITableServices
 {
-    Table GetTableByNumber(string number);
-    void CreateTable(Table table);
-    public void InsertProductsIntoTable(Table table, ConsumePostBody consumeBody);
+    Task<Table> GetTableByNumber(string number);
+    Task CreateTable(Table table);
+    Task InsertProductsIntoTable(Table table, ConsumePostBody consumeBody);
 
 }

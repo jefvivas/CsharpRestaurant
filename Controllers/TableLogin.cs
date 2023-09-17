@@ -23,9 +23,9 @@ public class TableLogin : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] TableLoginInput credentials)
+    public async Task<IActionResult> Post([FromBody] TableLoginInput credentials)
     {
-        var tableFound = _tableServices.GetTableByNumber(credentials.Number);
+        var tableFound = await _tableServices.GetTableByNumber(credentials.Number);
 
         if (tableFound == null)
         {

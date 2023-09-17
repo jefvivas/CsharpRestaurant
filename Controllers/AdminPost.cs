@@ -21,9 +21,9 @@ public class AdminPost : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] Admin admin)
+    public async Task<IActionResult> Post([FromBody] Admin admin)
     {
-        var isAdminAlreadyCreated = _adminServices.GetAdminByUsername(admin.Username);
+        var isAdminAlreadyCreated = await _adminServices.GetAdminByUsername(admin.Username);
 
         if (isAdminAlreadyCreated != null)
         {
@@ -46,7 +46,7 @@ public class AdminPost : ControllerBase
 
         var adminToInsert = new Admin(admin.Username, hashedPassword);
 
-        _adminServices.CreateAdmin(adminToInsert);
+        await _adminServices.CreateAdmin(adminToInsert);
 
         return Ok("Admin stored successfully");
     }

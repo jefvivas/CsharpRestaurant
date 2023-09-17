@@ -18,10 +18,10 @@ public class ProductGetAll : ControllerBase
 
     [HttpGet]
 
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
 
-        var Products = _productServices.GetAllProducts();
+        var Products = await _productServices.GetAllProducts();
 
         if (!Products.Any())
         {

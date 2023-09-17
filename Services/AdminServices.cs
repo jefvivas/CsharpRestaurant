@@ -14,14 +14,14 @@ public class AdminServices : IAdminServices
     }
 
 
-    public Admin GetAdminByUsername(string username)
+    public async Task<Admin> GetAdminByUsername(string username)
     {
-        return _collection.Find(a => a.Username == username).FirstOrDefault();
+        return await _collection.Find(a => a.Username == username).FirstOrDefaultAsync();
     }
 
-    public void CreateAdmin(Admin admin)
+    public async Task CreateAdmin(Admin admin)
     {
-        _collection.InsertOne(admin);
+        await _collection.InsertOneAsync(admin);
     }
 
 }

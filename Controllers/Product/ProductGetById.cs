@@ -15,10 +15,10 @@ public class ProductGetById : ControllerBase
 
     [HttpGet]
 
-    public IActionResult Get([FromRoute] string id)
+    public async Task<IActionResult> Get([FromRoute] string id)
     {
 
-        var product = _productServices.GetProductById(id);
+        var product = await _productServices.GetProductById(id);
 
         if (product == null)
         {
