@@ -97,6 +97,17 @@ builder.Services.AddAuthentication(options =>
      };
  });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactFrontend", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
+
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<TableServices>();
 builder.Services.AddScoped<JwtServices>();
@@ -113,6 +124,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowReactFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

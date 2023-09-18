@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Restaurant.Services;
 
-[Authorize(AuthenticationSchemes = "adminJWT")]
+[Authorize]
 [Route("product")]
 [ApiController]
 public class ProductGetAll : ControllerBase
