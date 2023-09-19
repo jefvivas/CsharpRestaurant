@@ -15,9 +15,9 @@ public class ProductPost : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Product product)
+    public async Task<IActionResult> Post([FromBody] Product product)
     {
-        var isProductAlreadyCreated = _productServices.GetProductByName(product.Name);
+        var isProductAlreadyCreated = await _productServices.GetProductByName(product.Name);
 
         if (isProductAlreadyCreated != null)
         {
@@ -36,9 +36,9 @@ public class ProductPost : ControllerBase
 
         }
 
-        var productToInsert = new Product(product.Name, product.Price, product.Description, product.isAvailable);
+        var productToInsert = new Product(product.Name, product.Price, product.Description, product.IsAvailable);
 
-        _productServices.CreateProduct(productToInsert);
+        await _productServices.CreateProduct(productToInsert);
 
         return Ok("Product stored successfully");
     }

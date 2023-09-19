@@ -2,6 +2,6 @@
 
 public class ProductItem
 {
-    public string ProductId { get; set; }
-    public int Quantity { get; set; }
+    public required string ProductId { get; set; }
+    public int Quantity { get; set; } = 1;
 }

@@ -22,9 +22,9 @@ public class TablePost : ControllerBase
 
     [HttpPost]
 
-    public IActionResult Post([FromBody] Table table)
+    public async Task<IActionResult> Post([FromBody] Table table)
     {
-        var isTableAlreadyCreated = _tableServices.GetTableByNumber(table.Number);
+        var isTableAlreadyCreated = await _tableServices.GetTableByNumber(table.Number);
 
         if (isTableAlreadyCreated != null)
         {
@@ -47,7 +47,7 @@ public class TablePost : ControllerBase
 
         var tableToInsert = new Table(table.Number, hashedPassword);
 
-        _tableServices.CreateTable(tableToInsert);
+        await _tableServices.CreateTable(tableToInsert);
 
         return Ok("Table stored successfully");
     }

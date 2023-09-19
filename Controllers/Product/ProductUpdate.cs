@@ -30,7 +30,7 @@ public class ProductUpdate : ControllerBase
         }
 
         existingProduct.Name = updatedProduct.Name;
-        existingProduct.isAvailable = updatedProduct.isAvailable;
+        existingProduct.IsAvailable = updatedProduct.IsAvailable;
         existingProduct.Description = updatedProduct.Description;
         existingProduct.Price = updatedProduct.Price;
 

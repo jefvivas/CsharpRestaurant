@@ -14,17 +14,17 @@ public class Product
     public decimal Price { get; set; }
 
     [BsonElement("Description")]
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     [BsonElement("Available")]
-    public bool isAvailable { get; set; }
+    public bool IsAvailable { get; set; }
 
     public Product(string Name, decimal Price, string Description, bool isAvailable = true)
     {
         this.Name = Name;
         this.Price = Price;
         this.Description = Description;
-        this.isAvailable = isAvailable;
+        this.IsAvailable = isAvailable;
     }
 
     public bool IsValid()

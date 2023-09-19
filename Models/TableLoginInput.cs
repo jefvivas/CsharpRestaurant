@@ -2,6 +2,6 @@
 
 public class TableLoginInput
 {
-    public string Number { get; set; }
-    public string Password { get; set; }
+    public required string Number { get; set; }
+    public required string Password { get; set; }
 }

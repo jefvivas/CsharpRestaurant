@@ -18,17 +18,17 @@ public class ProductDelete : ControllerBase
     }
 
     [HttpDelete]
-    public IActionResult Delete([FromRoute] string id)
+    public async Task<IActionResult> Delete([FromRoute] string id)
     {
 
-        var product = _productServices.GetProductById(id);
+        var product = await _productServices.GetProductById(id);
 
         if (product == null)
         {
             return NotFound("Product not found");
         }
 
-        _productServices.DeleteProduct(id);
+        await _productServices.DeleteProduct(id);
 
 
         return Ok("Product Deleted");
