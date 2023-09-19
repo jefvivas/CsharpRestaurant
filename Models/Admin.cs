@@ -7,12 +7,13 @@ public class Admin
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
 
     public Admin(string username, string password)
     {
+        this.Id = ObjectId.GenerateNewId().ToString();
         Username = username;
         Password = password;
     }

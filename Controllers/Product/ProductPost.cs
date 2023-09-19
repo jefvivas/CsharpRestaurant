@@ -36,7 +36,7 @@ public class ProductPost : ControllerBase
 
         }
 
-        var productToInsert = new Product(product.Name, product.Price, product.Description, product.IsAvailable);
+        var productToInsert = new Product(product.Name, product.Price, product.Description, product.Category, product.IsAvailable);
 
         await _productServices.CreateProduct(productToInsert);
 

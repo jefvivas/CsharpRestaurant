@@ -112,6 +112,8 @@ builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<TableServices>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<HashServices>();
+builder.Services.AddScoped<AdminServices>();
+
 
 
 

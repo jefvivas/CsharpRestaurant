@@ -27,7 +27,7 @@ public class ProductGetAll : ControllerBase
         {
             return NotFound("No products!");
         }
-        var ProductResponse = Products.Select(p => new ProductGetResponse { Id = p.Id, Name = p.Name, Price = p.Price });
+        var ProductResponse = Products.Select(p => new ProductGetResponse { Id = p.Id, Name = p.Name, Price = p.Price, Category = p.Category, Description = p.Description });
 
 
         return Ok(ProductResponse);

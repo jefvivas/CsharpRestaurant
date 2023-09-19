@@ -32,6 +32,7 @@ public class ProductUpdate : ControllerBase
         existingProduct.Name = updatedProduct.Name;
         existingProduct.IsAvailable = updatedProduct.IsAvailable;
         existingProduct.Description = updatedProduct.Description;
+        existingProduct.Category = updatedProduct.Category;
         existingProduct.Price = updatedProduct.Price;
 
         await _productServices.UpdateProduct(existingProduct);
