@@ -8,7 +8,7 @@ namespace Restaurant.Services;
 
 public class JwtServices : IJwtServices
 {
-    public string GetUniqueNameClaim(HttpContext httpContext)
+    public string? GetUniqueNameClaim(HttpContext httpContext)
     {
         var authHeader = httpContext.Request.Headers.Authorization.ToString();
 
