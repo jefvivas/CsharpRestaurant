@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using Restaurant.Models;
 using Restaurant.Services;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -114,7 +115,10 @@ builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<HashServices>();
 builder.Services.AddScoped<AdminServices>();
 
-
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 
 

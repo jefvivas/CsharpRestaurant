@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Restaurant.Enums;
 
 public class Product
 {
@@ -17,12 +18,13 @@ public class Product
     public string Description { get; set; }
 
     [BsonElement("Category")]
-    public string Category { get; set; }
+    [BsonRepresentation(BsonType.String)]
+    public CategoryEnum Category { get; set; }
 
     [BsonElement("Available")]
     public bool IsAvailable { get; set; }
 
-    public Product(string Name, decimal Price, string Description, string Category, bool IsAvailable = true)
+    public Product(string Name, decimal Price, string Description, CategoryEnum Category, bool IsAvailable = true)
     {
         this.Id = ObjectId.GenerateNewId().ToString();
         this.Name = Name;
@@ -34,7 +36,7 @@ public class Product
 
     public bool IsValid()
     {
-        return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Category) && Price > 0;
+        return !string.IsNullOrEmpty(Name) && Price > 0;
     }
 }
 
