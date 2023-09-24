@@ -30,7 +30,7 @@ public class AdminLogin : ControllerBase
 
         if (adminFound == null)
         {
-            return Unauthorized("Username/password dont match");
+            return Unauthorized(new { message = "Username/password don't match" });
 
         }
         if (_hashService.VerifyPassword(credentials.Password, adminFound.Password))
@@ -40,7 +40,7 @@ public class AdminLogin : ControllerBase
             return Ok(new { Token = token });
         }
 
-        return Unauthorized("Username/passworde dont match");
+        return Unauthorized(new { message = "Username/password don't match" });
     }
 
 }

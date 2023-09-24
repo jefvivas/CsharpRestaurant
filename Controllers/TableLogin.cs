@@ -29,7 +29,7 @@ public class TableLogin : ControllerBase
 
         if (tableFound == null)
         {
-            return Unauthorized("Number/password dont match");
+            return Unauthorized((new { message = "Username/password don't match" }));
 
         }
         if (_hashService.VerifyPassword(credentials.Password, tableFound.Password))
@@ -39,7 +39,7 @@ public class TableLogin : ControllerBase
             return Ok(new { Token = token });
         }
 
-        return Unauthorized("Number/password dont match");
+        return Unauthorized((new { message = "Username/password don't match" }));
     }
 
 
