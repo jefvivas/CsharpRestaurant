@@ -56,6 +56,15 @@ builder.Services.AddSingleton<IMongoCollection<Admin>>(sp =>
     return database.GetCollection<Admin>("Admin");
 });
 
+builder.Services.AddSingleton<IMongoCollection<ErrorLog>>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+
+    var mongoClient = new MongoClient(settings.ConnectionString);
+    var database = mongoClient.GetDatabase(settings.DatabaseName);
+    return database.GetCollection<ErrorLog>("Logs");
+});
+
 builder.Services.AddTransient<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
@@ -114,6 +123,8 @@ builder.Services.AddScoped<TableServices>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<HashServices>();
 builder.Services.AddScoped<AdminServices>();
+builder.Services.AddScoped<LogServices>();
+
 
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
