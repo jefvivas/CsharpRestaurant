@@ -62,7 +62,16 @@ builder.Services.AddSingleton<IMongoCollection<ErrorLog>>(sp =>
 
     var mongoClient = new MongoClient(settings.ConnectionString);
     var database = mongoClient.GetDatabase(settings.DatabaseName);
-    return database.GetCollection<ErrorLog>("Logs");
+    return database.GetCollection<ErrorLog>("ErrorLogs");
+});
+
+builder.Services.AddSingleton<IMongoCollection<OrderLog>>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>().Value;
+
+    var mongoClient = new MongoClient(settings.ConnectionString);
+    var database = mongoClient.GetDatabase(settings.DatabaseName);
+    return database.GetCollection<OrderLog>("OrderLogs");
 });
 
 builder.Services.AddTransient<IMongoDatabase>(sp =>
@@ -123,7 +132,8 @@ builder.Services.AddScoped<TableServices>();
 builder.Services.AddScoped<JwtServices>();
 builder.Services.AddScoped<HashServices>();
 builder.Services.AddScoped<AdminServices>();
-builder.Services.AddScoped<LogServices>();
+builder.Services.AddScoped<ErrorLogServices>();
+builder.Services.AddScoped<OrderLogServices>();
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>

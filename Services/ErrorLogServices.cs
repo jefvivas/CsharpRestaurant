@@ -3,11 +3,11 @@ using Restaurant.Interfaces;
 
 namespace Restaurant.Services;
 
-public class LogServices : ILogServices
+public class ErrorLogServices : IErrorLogServices
 {
     private readonly IMongoCollection<ErrorLog> _collection;
 
-    public LogServices(IMongoCollection<ErrorLog> collection)
+    public ErrorLogServices(IMongoCollection<ErrorLog> collection)
     {
         _collection = collection;
     }

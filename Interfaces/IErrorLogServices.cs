@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Interfaces;
 
-public interface ILogServices
+public interface IErrorLogServices
 {
     Task CreateLog(ErrorLog log);
 
