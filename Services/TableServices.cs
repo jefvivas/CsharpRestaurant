@@ -16,7 +16,12 @@ public class TableServices : ITableServices
 
     public async Task<Table> GetTableByNumber(string number)
     {
-        return await _collection.Find(p => p.Number == number).FirstOrDefaultAsync();
+        return await _collection.Find(t => t.Number == number).FirstOrDefaultAsync();
+    }
+
+    public async Task<Table> GetTableById(string id)
+    {
+        return await _collection.Find(t => t.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task CreateTable(Table table)
@@ -27,25 +32,33 @@ public class TableServices : ITableServices
     {
         foreach (var item in consumeBody.Items)
         {
-            if (!table.ConsumedProducts.ContainsKey(item.ProductId))
 
+            var existingItem = table.ConsumedProducts.FirstOrDefault(p => p.ProductId == item.ProductId);
+
+            if (existingItem == null)
             {
-                table.ConsumedProducts.Add(item.ProductId, item.Quantity);
-
+                table.ConsumedProducts.Add(new OrderItem
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
+                });
             }
             else
             {
-                table.ConsumedProducts[item.ProductId] += item.Quantity;
+                existingItem.Quantity += item.Quantity;
             }
-
-
         }
 
-        var filter = Builders<Table>.Filter.Eq(t => t.Number, table.Number);
-        var update = Builders<Table>.Update
-            .Set(t => t.ConsumedProducts, table.ConsumedProducts);
+        var filter = Builders<Table>.Filter.Eq(t => t.Id, table.Id);
+        var update = Builders<Table>.Update.Set(t => t.ConsumedProducts, table.ConsumedProducts);
 
         await _collection.ReplaceOneAsync(filter, table);
+
+    }
+
+    public async Task UpdateTable(Table table)
+    {
+        await _collection.ReplaceOneAsync(t => t.Id == table.Id, table);
 
     }
 

@@ -26,7 +26,7 @@ public class Product
 
     public Product(string Name, decimal Price, string Description, CategoryEnum Category, bool IsAvailable = true)
     {
-        this.Id = ObjectId.GenerateNewId().ToString();
+        Id = ObjectId.GenerateNewId().ToString();
         this.Name = Name;
         this.Price = Price;
         this.Description = Description;

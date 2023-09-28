@@ -4,7 +4,7 @@ using Restaurant.Services;
 
 namespace Restaurant.Controllers;
 
-[Route("/login")]
+[Route("login")]
 [ApiController]
 public class TableLogin : ControllerBase
 {

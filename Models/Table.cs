@@ -6,16 +6,16 @@ public class Table
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; }
     public string Number { get; set; }
     public string Password { get; set; }
-    public Dictionary<string, int> ConsumedProducts { get; set; }
-
+    public List<OrderItem> ConsumedProducts { get; set; }
     public Table(string number, string password)
     {
+        Id = ObjectId.GenerateNewId().ToString();
         Number = number;
         Password = password;
-        ConsumedProducts = new Dictionary<string, int>();
+        ConsumedProducts = new List<OrderItem>();
 
     }
 }

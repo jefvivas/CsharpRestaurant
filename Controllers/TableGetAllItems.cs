@@ -37,8 +37,8 @@ public class TableGetAllItems : ControllerBase
         {
             Items = tableData.ConsumedProducts.Select(p => new ProductItem
             {
-                ProductId = p.Key,
-                Quantity = p.Value
+                ProductId = p.ProductId,
+                Quantity = p.Quantity
             }).ToList()
         };
 
