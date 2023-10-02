@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Restaurant.Services;
 
 [Authorize]
@@ -8,7 +7,6 @@ using Restaurant.Services;
 [ApiController]
 public class ProductGetAll : ControllerBase
 {
-
     private readonly ProductServices _productServices;
 
     public ProductGetAll(ProductServices productServices)
@@ -17,21 +15,26 @@ public class ProductGetAll : ControllerBase
     }
 
     [HttpGet]
-
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] bool? onlyAvailable)
     {
-
-        var Products = await _productServices.GetAllProducts();
+        var Products = !onlyAvailable.HasValue || (onlyAvailable.HasValue && onlyAvailable.Value)
+            ? await _productServices.GetAllAvailableProducts()
+            : await _productServices.GetAllProducts();
 
         if (!Products.Any())
         {
             return NotFound("No products!");
         }
-        var ProductResponse = Products.Select(p => new ProductGetResponse { Id = p.Id, Name = p.Name, Price = p.Price, Category = p.Category, Description = p.Description });
 
+        var ProductResponse = Products.Select(p => new ProductGetResponse
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            Category = p.Category,
+            Description = p.Description
+        });
 
         return Ok(ProductResponse);
     }
-
-
 }
