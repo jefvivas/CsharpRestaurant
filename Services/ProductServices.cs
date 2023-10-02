@@ -27,6 +27,11 @@ public class ProductServices : IProductServices
         return await _collection.Find(_ => true).ToListAsync();
     }
 
+    public async Task<IEnumerable<Product>> GetAllAvailableProducts()
+    {
+        return await _collection.Find(p => p.IsAvailable == true).ToListAsync();
+    }
+
     public async Task DeleteProduct(string id)
     {
         await _collection.DeleteOneAsync(p => p.Id == id);
