@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Services;
 
+[Authorize(Policy = "AdminOrUserPolicy")]
 [Authorize]
 [Route("product")]
 [ApiController]

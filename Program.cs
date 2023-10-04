@@ -116,6 +116,15 @@ builder.Services.AddAuthentication(options =>
      };
  });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOrUserPolicy", policy =>
+    {
+        policy.AddAuthenticationSchemes("adminJWT", JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireAuthenticatedUser();
+    });
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactFrontend", builder =>
