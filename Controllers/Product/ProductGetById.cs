@@ -24,7 +24,7 @@ public class ProductGetById : ControllerBase
         {
             return NotFound("Product not found!");
         }
-        var ProductResponse = new ProductGetResponse { Id = product.Id, Name = product.Name, Price = product.Price, Category = product.Category, Description = product.Description };
+        var ProductResponse = new ProductGetResponse { Id = product.Id, Name = product.Name, Price = product.Price, Category = product.Category, Description = product.Description, isAvailable = product.IsAvailable };
 
 
         return Ok(ProductResponse);

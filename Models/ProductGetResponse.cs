@@ -10,5 +10,6 @@ public class ProductGetResponse
 
     public required string Description { get; set; }
 
+    public required bool isAvailable { get; set; }
     public required CategoryEnum Category { get; set; }
 }

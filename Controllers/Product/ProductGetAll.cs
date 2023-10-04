@@ -33,7 +33,8 @@ public class ProductGetAll : ControllerBase
             Name = p.Name,
             Price = p.Price,
             Category = p.Category,
-            Description = p.Description
+            Description = p.Description,
+            isAvailable = p.IsAvailable
         });
 
         return Ok(ProductResponse);
